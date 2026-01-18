@@ -1,11 +1,17 @@
 {
   "name": "dropship-system",
   "version": "1.0.0",
+  "description": "Dropship System with Admin Panel",
   "scripts": {
-    "start": "php -S localhost:8000"
+    "dev": "vercel dev",
+    "start": "php -S localhost:8000",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@vercel/php": "^0.6.0"
+  },
+  "devDependencies": {
+    "vercel": "^28.0.0"
   },
   "engines": {
     "node": ">=14"

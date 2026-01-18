@@ -1,0 +1,13 @@
+{
+  "name": "dropship-system",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "php -S localhost:8000"
+  },
+  "dependencies": {
+    "@vercel/php": "^0.6.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

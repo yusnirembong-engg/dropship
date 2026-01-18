@@ -1,28 +1,95 @@
 {
   "functions": {
-    "panel-dropship-admin/api/*.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.6.0"
     },
-    "website-dropship/api/*.php": {
+    "panel/*.php": {
+      "runtime": "vercel-php@0.6.0"
+    },
+    "website/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/panel-dropship-admin/(.*)",
-      "dest": "/panel-dropship-admin/api/index.php"
+      "source": "/",
+      "destination": "/website/index.php"
     },
     {
-      "src": "/website-dropship/(.*)",
-      "dest": "/website-dropship/api/index.php"
+      "source": "/admin",
+      "destination": "/panel/index.php"
     },
     {
-      "src": "/",
-      "dest": "/website-dropship/api/index.php"
+      "source": "/admin/(.*)",
+      "destination": "/panel/index.php?route=$1"
     },
     {
-      "src": "/admin",
-      "dest": "/panel-dropship-admin/api/index.php"
+      "source": "/panel",
+      "destination": "/panel/index.php"
+    },
+    {
+      "source": "/panel/(.*)",
+      "destination": "/panel/index.php?route=$1"
+    },
+    {
+      "source": "/website",
+      "destination": "/website/index.php"
+    },
+    {
+      "source": "/website/(.*)",
+      "destination": "/website/index.php?route=$1"
+    },
+    {
+      "source": "/products",
+      "destination": "/website/products.php"
+    },
+    {
+      "source": "/product/(.*)",
+      "destination": "/website/product-detail.php?id=$1"
+    },
+    {
+      "source": "/cart",
+      "destination": "/website/cart.php"
+    },
+    {
+      "source": "/checkout",
+      "destination": "/website/checkout.php"
+    },
+    {
+      "source": "/login",
+      "destination": "/website/login.php"
+    },
+    {
+      "source": "/register",
+      "destination": "/website/register.php"
+    },
+    {
+      "source": "/account",
+      "destination": "/website/account.php"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET,POST,PUT,DELETE,OPTIONS"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

@@ -1,21 +1,16 @@
 {
-  "name": "dropship-system",
+  "name": "dropship-vercel",
   "version": "1.0.0",
-  "description": "Dropship System with Admin Panel",
+  "description": "Complete Dropship System for Vercel",
   "scripts": {
     "dev": "vercel dev",
-    "start": "node server.js",
+    "start": "php -S localhost:8000",
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@vercel/php": "^0.6.0",
-    "@vercel/node": "^2.15.6"
+    "@vercel/php": "^0.6.0"
   },
   "engines": {
-    "node": "18.x",
-    "npm": "9.x"
-  },
-  "devDependencies": {
-    "vercel": "^28.0.0"
+    "node": "18.x"
   }
 }

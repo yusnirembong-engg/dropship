@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /website-dropship/
+    
+    # Redirect API calls
+    RewriteRule ^api/(.*)$ api/index.php?route=$1 [QSA,L]
+    
+    # Serve static files
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+    
+    # Redirect all to API
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ api/index.php [QSA,L]
+</IfModule>

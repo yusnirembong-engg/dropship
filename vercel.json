@@ -1,0 +1,35 @@
+{
+  "functions": {
+    "api/*.php": {
+      "runtime": "vercel-php@0.6.0"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
+      "src": "/panel-dropship-admin/(.*)",
+      "dest": "/panel-dropship-admin/api/index.php"
+    },
+    {
+      "src": "/website-dropship/(.*)",
+      "dest": "/website-dropship/api/index.php"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/website-dropship/api/index.php"
+    },
+    {
+      "source": "/admin",
+      "destination": "/panel-dropship-admin/api/index.php"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/website-dropship/api/$1"
+    }
+  ]
+}

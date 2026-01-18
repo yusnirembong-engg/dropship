@@ -315,4 +315,161 @@ class Database {
                 $stmt->execute();
             } else {
                 $stmt = $this->connection->prepare($sql);
-                $stmt->bindValue(1, $username, SQLITE3_TEXT
+                $stmt->bindValue(1, $username, SQLITE3_TEXT);
+                $stmt->bindValue(2, $email, SQLITE3_TEXT);
+                $stmt->bindValue(3, $password, SQLITE3_TEXT);
+                $stmt->execute();
+            }
+        }
+    }
+    
+    private function insertDemoData() {
+        // Check if demo data already exists
+        $checkProducts = $this->connection->query("SELECT COUNT(*) as count FROM products");
+        
+        if ($this->connection instanceof mysqli) {
+            $row = $checkProducts->fetch_assoc();
+        } else {
+            $row = $checkProducts->fetchArray(SQLITE3_ASSOC);
+        }
+        
+        if ($row['count'] == 0) {
+            // Insert categories
+            $categories = [
+                ['name' => 'Elektronik', 'slug' => 'elektronik'],
+                ['name' => 'Fashion', 'slug' => 'fashion'],
+                ['name' => 'Rumah Tangga', 'slug' => 'rumah-tangga'],
+                ['name' => 'Kecantikan', 'slug' => 'kecantikan']
+            ];
+            
+            foreach ($categories as $category) {
+                $sql = "INSERT INTO categories (name, slug) VALUES (?, ?)";
+                if ($this->connection instanceof mysqli) {
+                    $stmt = $this->connection->prepare($sql);
+                    $stmt->bind_param("ss", $category['name'], $category['slug']);
+                    $stmt->execute();
+                } else {
+                    $stmt = $this->connection->prepare($sql);
+                    $stmt->bindValue(1, $category['name'], SQLITE3_TEXT);
+                    $stmt->bindValue(2, $category['slug'], SQLITE3_TEXT);
+                    $stmt->execute();
+                }
+            }
+            
+            // Insert sample products
+            $products = [
+                [
+                    'name' => 'Smartphone Android',
+                    'slug' => 'smartphone-android',
+                    'description' => 'Smartphone Android dengan spesifikasi tinggi',
+                    'price' => 2500000,
+                    'cost_price' => 2000000,
+                    'stock' => 50,
+                    'category_id' => 1,
+                    'image' => 'phone.jpg'
+                ],
+                [
+                    'name' => 'Kaos Polo Premium',
+                    'slug' => 'kaos-polo-premium',
+                    'description' => 'Kaos polo bahan katun premium',
+                    'price' => 150000,
+                    'cost_price' => 100000,
+                    'stock' => 100,
+                    'category_id' => 2,
+                    'image' => 'shirt.jpg'
+                ],
+                [
+                    'name' => 'Blender 5in1',
+                    'slug' => 'blender-5in1',
+                    'description' => 'Blender multifungsi dengan 5 fitur',
+                    'price' => 350000,
+                    'cost_price' => 250000,
+                    'stock' => 30,
+                    'category_id' => 3,
+                    'image' => 'blender.jpg'
+                ]
+            ];
+            
+            foreach ($products as $product) {
+                $sql = "INSERT INTO products (name, slug, description, price, cost_price, stock, category_id, image) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                
+                if ($this->connection instanceof mysqli) {
+                    $stmt = $this->connection->prepare($sql);
+                    $stmt->bind_param(
+                        "sssddiis",
+                        $product['name'],
+                        $product['slug'],
+                        $product['description'],
+                        $product['price'],
+                        $product['cost_price'],
+                        $product['stock'],
+                        $product['category_id'],
+                        $product['image']
+                    );
+                    $stmt->execute();
+                } else {
+                    $stmt = $this->connection->prepare($sql);
+                    $stmt->bindValue(1, $product['name'], SQLITE3_TEXT);
+                    $stmt->bindValue(2, $product['slug'], SQLITE3_TEXT);
+                    $stmt->bindValue(3, $product['description'], SQLITE3_TEXT);
+                    $stmt->bindValue(4, $product['price'], SQLITE3_FLOAT);
+                    $stmt->bindValue(5, $product['cost_price'], SQLITE3_FLOAT);
+                    $stmt->bindValue(6, $product['stock'], SQLITE3_INTEGER);
+                    $stmt->bindValue(7, $product['category_id'], SQLITE3_INTEGER);
+                    $stmt->bindValue(8, $product['image'], SQLITE3_TEXT);
+                    $stmt->execute();
+                }
+            }
+        }
+    }
+    
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
+    
+    public function getConnection() {
+        return $this->connection;
+    }
+    
+    public function escapeString($string) {
+        if ($this->connection instanceof mysqli) {
+            return $this->connection->real_escape_string($string);
+        } else {
+            return SQLite3::escapeString($string);
+        }
+    }
+    
+    public function getLastInsertId() {
+        if ($this->connection instanceof mysqli) {
+            return $this->connection->insert_id;
+        } else {
+            return $this->connection->lastInsertRowID();
+        }
+    }
+    
+    public function query($sql) {
+        try {
+            if ($this->connection instanceof mysqli) {
+                return $this->connection->query($sql);
+            } else {
+                return $this->connection->query($sql);
+            }
+        } catch (Exception $e) {
+            error_log("Query Error: " . $e->getMessage() . " - SQL: " . $sql);
+            return false;
+        }
+    }
+    
+    public function prepare($sql) {
+        if ($this->connection instanceof mysqli) {
+            return $this->connection->prepare($sql);
+        } else {
+            return $this->connection->prepare($sql);
+        }
+    }
+}
+?>

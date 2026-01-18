@@ -1,7 +1,7 @@
 {
   "name": "dropship-vercel",
   "version": "1.0.0",
-  "description": "Complete Dropship System for Vercel",
+  "description": "Complete Dropship System for Vercel - Optimized for Node.js 24.x",
   "scripts": {
     "dev": "vercel dev",
     "start": "php -S localhost:8000",
@@ -11,6 +11,10 @@
     "@vercel/php": "^0.6.0"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x",
+    "npm": "10.x"
+  },
+  "devDependencies": {
+    "vercel": "^28.0.0"
   }
 }

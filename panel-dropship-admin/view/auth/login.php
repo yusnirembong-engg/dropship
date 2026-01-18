@@ -72,4 +72,90 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
                     </div>
                 </div>
                 <div class="text-center mt-3 text-white">
-                    <small>&copy
+                    <small>&copy; <?= date('Y') ?> Dropship System</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('login-btn');
+        const spinner = document.getElementById('login-spinner');
+        const loginText = document.getElementById('login-text');
+        
+        // Show loading
+        btn.disabled = true;
+        spinner.classList.remove('d-none');
+        loginText.textContent = 'Memproses...';
+        
+        // Get form data
+        const formData = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value
+        };
+        
+        // Send login request
+        fetch('/panel-dropship-admin/api/login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                showMessage('success', 'Login berhasil! Mengalihkan...');
+                
+                // Redirect to dashboard after 1 second
+                setTimeout(() => {
+                    window.location.href = '/panel-dropship-admin/dashboard';
+                }, 1000);
+            } else {
+                // Show error message
+                showMessage('danger', data.message || 'Login gagal!');
+                
+                // Reset button
+                btn.disabled = false;
+                spinner.classList.add('d-none');
+                loginText.textContent = 'Login';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('danger', 'Terjadi kesalahan. Coba lagi.');
+            
+            // Reset button
+            btn.disabled = false;
+            spinner.classList.add('d-none');
+            loginText.textContent = 'Login';
+        });
+    });
+    
+    function showMessage(type, text) {
+        const messageDiv = document.getElementById('login-message');
+        messageDiv.innerHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${text}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(() => {
+            const alert = messageDiv.querySelector('.alert');
+            if (alert) {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 150);
+            }
+        }, 5000);
+    }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

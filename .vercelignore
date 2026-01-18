@@ -1,0 +1,17 @@
+# Ignore unnecessary files for Vercel
+.git
+.gitignore
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sql
+*.sqlite
+database/
+local-config.php
+.env
+.env.local
+*.md
+LICENSE

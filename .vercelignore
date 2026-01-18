@@ -1,0 +1,14 @@
+.git
+.gitignore
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sql
+.env
+.env.local
+README.md
+composer.json
+composer.lock

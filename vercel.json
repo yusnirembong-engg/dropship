@@ -1,80 +1,28 @@
 {
   "functions": {
     "panel-dropship-admin/api/*.php": {
-      "runtime": "vercel-php@0.6.0",
-      "maxDuration": 30
+      "runtime": "vercel-php@0.6.0"
     },
     "website-dropship/api/*.php": {
-      "runtime": "vercel-php@0.6.0",
-      "maxDuration": 30
-    },
-    "api/*.php": {
-      "runtime": "vercel-php@0.6.0",
-      "maxDuration": 30
+      "runtime": "vercel-php@0.6.0"
     }
   },
   "routes": [
     {
       "src": "/panel-dropship-admin/(.*)",
-      "dest": "/panel-dropship-admin/api/index.php",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
+      "dest": "/panel-dropship-admin/api/index.php"
     },
     {
       "src": "/website-dropship/(.*)",
-      "dest": "/website-dropship/api/index.php",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
+      "dest": "/website-dropship/api/index.php"
     },
     {
       "src": "/",
-      "dest": "/website-dropship/api/index.php",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
+      "dest": "/website-dropship/api/index.php"
     },
     {
       "src": "/admin",
-      "dest": "/panel-dropship-admin/api/index.php",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/(.*\\.(css|js))",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/(.*\\.(jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot))",
-      "headers": {
-        "Cache-Control": "public, max-age=86400"
-      }
+      "dest": "/panel-dropship-admin/api/index.php"
     }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Credentials", "value": "true" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization" }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
-      ]
-    }
-  ],
-  "env": {
-    "PHP_INI_SCAN_DIR": "/var/task/php/conf.d:/var/task/user/conf.d"
-  }
+  ]
 }
